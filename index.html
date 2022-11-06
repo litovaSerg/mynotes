@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Create page</title>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="header">
+        <h1>Create page</h1>
+      </div>
+      <main class="main">
+        <section class="posts"></section>
+        <!-- <button class="article__flip-post">Flip note order</button>-->
+        <form>
+          <fieldset>
+            <legend>В каком порядке выводить?</legend>
+            <label>
+              <input type="radio" class="radio" checked name="reverse" value="new" />
+              Сначала новые
+            </label>
+            <label>
+              <input type="radio" class="radio" name="reverse" value="old" />
+              Сначала старые
+            </label>
+          </fieldset>
+        </form>
+        <form class="send-post" action="#">
+          <input type="text" placeholder="Введите заголовок" class="input" />
+          <textarea
+            name=""
+            id="newmessage"
+            cols="30"
+            rows="10"
+            placeholder="Введите запись"
+            class="textarea"
+          ></textarea>
+          <!-- <button type="submit" class="post">Отправить</button> -->
+          <input type="submit" class="post" value="Послать" />
+        </form>
+      </main>
+      <footer>
+        <div id="notes"></div>
+      </footer>
+    </div>
+
+    <!-- <script defer src="script.js"></script> -->
+    <script defer src="js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.6rem;
+}
+h2,
+.posts__empty {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: rgb(39, 167, 241);
+}
+p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+textarea {
+  margin-bottom: 1rem;
+}
+button {
+  padding: 0.5rem;
+}
+form {
+  width: 100%;
+  max-width: 400px;
+}
+input[type='text'],
+textarea {
+  font-size: 1.6rem;
+}
+fieldset {
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+}
+.wrapper {
+  max-width: 85%;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: GhostWhite;
+  border-radius: 1rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.header {
+  margin-bottom: 1rem;
+}
+.article,
+.posts__empty {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.posts__empty {
+  font-weight: bold;
+}
+
+.article__flip-post,
+.post {
+  border: none;
+  background-color: bisque;
+}
+.article__delete-post {
+  font-size: 1.2rem;
+  border: none;
+  background-color: rgba(174, 217, 236, 0.2);
+}
+.post {
+  padding: 0.5rem;
+}
+.input {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+}
+.textarea {
+  width: 100%;
+  padding: 0.8rem;
+}
+.article p {
+  font-weight: normal;
+}
+.radio {
+  margin-right: 0.8rem;
+}
+label {
+  display: block;
+  padding: 0.8rem;
+}
