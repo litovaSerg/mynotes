@@ -114,8 +114,7 @@ const options = {
   hour: 'numeric',
   minute: 'numeric',
 };
-const articleHeader = document.createElement('div');
-console.log(articleHeader);
+
 const displayNotes = (notes) => {
   let listHTML = '';
   for (let i = 0; i < notes.length; i++) {
