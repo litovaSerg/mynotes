@@ -3,50 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css" />
     <title>Create page</title>
   </head>
 
   <body>
-    <div class="wrapper">
-      <div class="header">
-        <h1>Create page</h1>
-      </div>
-      <main class="main">
-        <section class="posts"></section>
-        <!-- <button class="article__flip-post">Flip note order</button>-->
-        <form>
-          <fieldset>
-            <legend>В каком порядке выводить?</legend>
-            <label>
-              <input type="radio" class="radio" checked name="reverse" value="new" />
-              Сначала новые
-            </label>
-            <label>
-              <input type="radio" class="radio" name="reverse" value="old" />
-              Сначала старые
-            </label>
-          </fieldset>
-        </form>
-        <form class="send-post" action="#">
-          <input type="text" placeholder="Введите заголовок" class="input" />
-          <textarea
-            name=""
-            id="newmessage"
-            cols="30"
-            rows="10"
-            placeholder="Введите запись"
-            class="textarea"
-          ></textarea>
-          <input type="submit" class="post" value="Послать" />
-        </form>
+    <div class="container py-2">
+      <header class="px-2 py-4 mb-2 bg-secondary text-light text-uppercase">
+        <h1 class="display-5">Create page</h1>
+      </header>
+      <main class="row gx-2">
+        <section class="col-12 col-lg-9 posts"></section>
+        <section class="col col-lg-3">
+          <div class="article p-2"><h3 class="fs-4">Тест</h3>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint voluptate nam corrupti laboriosam cumque, voluptates harum omnis perferendis eaque commodi? Inventore eligendi repellat cum officia nostrum tenetur voluptatibus doloribus.</p>
+          </div>
+        </section>
+        <section class=" col-12 col-lg-9">
+          <form>
+            <fieldset>
+              <legend>В каком порядке выводить?</legend>
+              <label>
+                <input type="radio" class="radio" checked name="reverse" value="new" />
+                Сначала новые
+              </label>
+              <label>
+                <input type="radio" class="radio" name="reverse" value="old" />
+                Сначала старые
+              </label>
+            </fieldset>
+          </form>
+          <form class="send-post" action="#">
+            <input type="text" placeholder="Введите заголовок" class="input" />
+            <textarea
+              name=""
+              id="newmessage"
+              cols="30"
+              rows="10"
+              placeholder="Введите запись"
+              class="textarea"
+            ></textarea>
+            <input type="submit" class="post btn btn-lg btn-outline-success" value="Послать" />
+          </form>
+        </section>
+
       </main>
       <footer>
         <div id="notes"></div>
       </footer>
     </div>
 
-    <!-- <script defer src="script.js"></script> -->
+    <script defer src="js/bootstrap.bundle.min.js"></script>
     <script defer src="js/script.js"></script>
   </body>
 </html>

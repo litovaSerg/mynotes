@@ -1,59 +1,77 @@
-* {
+/* * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
 }
 html {
   font-size: 62.5%;
-}
-body {
+} */
+
+/* body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.6rem;
-}
-h2,
+} */
+
+/* h2,
 .posts__empty {
   font-size: 2rem;
   margin-bottom: 1rem;
   color: rgb(39, 167, 241);
+} */
+h2 {
+  font-size: 1.4rem;
 }
 p {
   margin-bottom: 1rem;
-  line-height: 1.5;
+  line-height: 1.7;
+  font-size: 1.2rem;
 }
 
-textarea {
+/* textarea {
   margin-bottom: 1rem;
-}
-button {
+} */
+
+/* button {
   padding: 0.5rem;
-}
+} */
+
 form {
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
 }
 input[type='text'],
 textarea {
+  display: inline-block;
   font-size: 1.6rem;
 }
 fieldset {
   padding: 0.8rem;
   margin-bottom: 1rem;
 }
-.wrapper {
+label {
+  display: block;
+  padding: 0.8rem;
+}
+
+.article__btn {
+  margin-right: .50rem;
+}
+/* .wrapper {
   max-width: 85%;
   margin: 1rem auto;
   padding: 1rem;
   background-color: GhostWhite;
   border-radius: 1rem;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-.header {
+} */
+
+/* .header {
   margin-bottom: 1rem;
-}
+} */
 .article,
 .posts__empty {
-  margin-bottom: 1rem;
-  padding: 1rem;
+  /* margin-bottom: 1rem;
+  padding: 1rem; */
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -62,36 +80,47 @@ fieldset {
   font-weight: bold;
 }
 
-.article__flip-post,
+
+/* .article__flip-post,
 .post {
   border: none;
   background-color: bisque;
-}
-.article__delete-post {
+} */
+
+/* .article__delete-post {
   font-size: 1.2rem;
   border: none;
   background-color: rgba(174, 217, 236, 0.2);
+} */
+
+/* .send-post {
+  display: inline-block;
+} */
+.empty-field {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: rgb(165, 8, 8);
 }
-.post {
+
+/* .post {
   padding: 0.5rem;
-}
+} */
+
 .input {
   display: block;
   width: 100%;
   padding: 0.8rem;
   margin-bottom: 1rem;
 }
+
 .textarea {
   width: 100%;
   padding: 0.8rem;
 }
-.article p {
+
+/* .article p {
   font-weight: normal;
-}
+} */
 .radio {
   margin-right: 0.8rem;
-}
-label {
-  display: block;
-  padding: 0.8rem;
 }

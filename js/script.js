@@ -60,12 +60,17 @@ submitForm.addEventListener('submit', (event) => {
   let title = input.value;
   let message = textarea.value;
   if (input.value.length == 0 || textarea.value == 0) {
-    alert('none');
+    // alert('none');
+    const emptyField = document.createElement('div');
+    emptyField.classList.add('empty-field');
+    submitForm.prepend(emptyField);
+    emptyField.textContent = 'Не оставляйте поля пустыми';
+    setTimeout(() => emptyField.remove(), 1200);
   } else {
     addStickyNote(db, title, message);
+    textarea.value = '';
+    input.value = '';
   }
-  textarea.value = '';
-  input.value = '';
 });
 
 // Извлечение
@@ -120,8 +125,8 @@ const displayNotes = (notes) => {
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i];
     listHTML +=
-      '<article class="article">' +
-      '<div>' +
+      '<article class="article mb-2 p-2">' +
+      '<div class="text-muted">' +
       new Date(note.timestamp).toLocaleString('ru', options).toString() +
       '</div>';
     listHTML +=
@@ -131,10 +136,14 @@ const displayNotes = (notes) => {
       '<p>' +
       note.text +
       '</p>' +
-      '<button class="article__delete-post" onclick="deleteNote(event)" data-id="' +
+      '<button type="button" class="article__btn btn btn-outline-danger btn-sm" onclick="deleteNote(event)" data-id="' +
       note.timestamp +
-      '">Удалить пост</button>' +
-      '</article>';
+      '">Удалить пост</button>' +  '<button type="button" class="article__btn btn btn-outline-warning btn-sm" data-id="' +
+      note.timestamp +
+      '">Редактировать пост</button>'+
+      '</article>'
+
+      ;
   }
   posts.innerHTML = listHTML;
   // Отображение
