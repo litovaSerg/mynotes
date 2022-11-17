@@ -38,6 +38,7 @@ const addStickyNote = (db, title, message) => {
   // tx.oncomplete = () => {
   //   console.log('stored note!');
   // };
+
   tx.oncomplete = () => {
     getAndDisplayNotes(db);
   };
@@ -51,8 +52,8 @@ dbReq.onsuccess = (event) => {
   db = event.target.result;
   getAndDisplayNotes(db);
 };
-
-const submitForm = document.querySelector('.send-post');
+// Отправка заметки 1 вариант
+/*  const submitForm = document.querySelector('.send-post');
 submitForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const input = submitForm.querySelector('.input');
@@ -65,12 +66,26 @@ submitForm.addEventListener('submit', (event) => {
     emptyField.classList.add('empty-field');
     submitForm.prepend(emptyField);
     emptyField.textContent = 'Не оставляйте поля пустыми';
-    setTimeout(() => emptyField.remove(), 1200);
+    setTimeout(() => emptyField.remove(), 1500);
   } else {
     addStickyNote(db, title, message);
     textarea.value = '';
     input.value = '';
   }
+});
+*/
+
+// Отправка заметки 2 вариант
+const submitForm = document.querySelector('.send-post');
+
+submitForm.addEventListener('submit', (event) => {
+  const formDate = new FormData(submitForm);
+  event.preventDefault();
+  const noteContent = Object.fromEntries(formDate);
+  const title = noteContent[submitForm.querySelector('input').getAttribute('name')];
+  const message = noteContent[submitForm.querySelector('textarea').getAttribute('name')];
+  addStickyNote(db, title, message);
+  submitForm.reset();
 });
 
 // Извлечение
@@ -138,12 +153,11 @@ const displayNotes = (notes) => {
       '</p>' +
       '<button type="button" class="article__btn btn btn-outline-danger btn-sm" onclick="deleteNote(event)" data-id="' +
       note.timestamp +
-      '">Удалить пост</button>' +  '<button type="button" class="article__btn btn btn-outline-warning btn-sm" data-id="' +
+      '">Удалить пост</button>' +
+      '<button type="button" class="article__btn btn btn-outline-warning btn-sm" data-id="' +
       note.timestamp +
-      '">Редактировать пост</button>'+
-      '</article>'
-
-      ;
+      '">Редактировать пост</button>' +
+      '</article>';
   }
   posts.innerHTML = listHTML;
   // Отображение

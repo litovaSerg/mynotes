@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
     <title>Create page</title>
   </head>
@@ -16,11 +16,16 @@
       <main class="row gx-2">
         <section class="col-12 col-lg-9 posts"></section>
         <section class="col col-lg-3">
-          <div class="article p-2"><h3 class="fs-4">Тест</h3>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint voluptate nam corrupti laboriosam cumque, voluptates harum omnis perferendis eaque commodi? Inventore eligendi repellat cum officia nostrum tenetur voluptatibus doloribus.</p>
+          <div class="article p-2">
+            <h3 class="fs-4">Тест</h3>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint voluptate nam corrupti
+              laboriosam cumque, voluptates harum omnis perferendis eaque commodi? Inventore eligendi repellat cum
+              officia nostrum tenetur voluptatibus doloribus.
+            </p>
           </div>
         </section>
-        <section class=" col-12 col-lg-9">
+        <section class="col-12 col-lg-9">
           <form>
             <fieldset>
               <legend>В каком порядке выводить?</legend>
@@ -35,9 +40,9 @@
             </fieldset>
           </form>
           <form class="send-post" action="#">
-            <input type="text" placeholder="Введите заголовок" class="input" />
+            <input type="text" name="title-note" placeholder="Введите заголовок" class="input" />
             <textarea
-              name=""
+              name="content-note"
               id="newmessage"
               cols="30"
               rows="10"
@@ -47,7 +52,6 @@
             <input type="submit" class="post btn btn-lg btn-outline-success" value="Послать" />
           </form>
         </section>
-
       </main>
       <footer>
         <div id="notes"></div>
