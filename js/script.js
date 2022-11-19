@@ -140,7 +140,7 @@ const displayNotes = (notes) => {
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i];
     listHTML +=
-      '<article class="article mb-2 p-2">' +
+      '<article class="article">' +
       '<div class="text-muted">' +
       new Date(note.timestamp).toLocaleString('ru', options).toString() +
       '</div>';
@@ -151,10 +151,10 @@ const displayNotes = (notes) => {
       '<p>' +
       note.text +
       '</p>' +
-      '<button type="button" class="article__btn btn btn-outline-danger btn-sm" onclick="deleteNote(event)" data-id="' +
+      '<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="' +
       note.timestamp +
       '">Удалить пост</button>' +
-      '<button type="button" class="article__btn btn btn-outline-warning btn-sm" data-id="' +
+      '<button type="button" class="article__btn article__btn_edit" data-id="' +
       note.timestamp +
       '">Редактировать пост</button>' +
       '</article>';
