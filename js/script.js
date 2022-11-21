@@ -52,6 +52,7 @@ dbReq.onsuccess = (event) => {
   db = event.target.result;
   getAndDisplayNotes(db);
 };
+
 // Отправка заметки 1 вариант
 /*  const submitForm = document.querySelector('.send-post');
 submitForm.addEventListener('submit', (event) => {
@@ -79,8 +80,8 @@ submitForm.addEventListener('submit', (event) => {
 const submitForm = document.querySelector('.send-post');
 
 submitForm.addEventListener('submit', (event) => {
-  const formDate = new FormData(submitForm);
   event.preventDefault();
+  const formDate = new FormData(submitForm);
   const noteContent = Object.fromEntries(formDate);
   const title = noteContent[submitForm.querySelector('input').getAttribute('name')];
   const message = noteContent[submitForm.querySelector('textarea').getAttribute('name')];
@@ -133,16 +134,21 @@ const options = {
   timezone: 'UTC',
   hour: 'numeric',
   minute: 'numeric',
+  second: 'numeric',
 };
 
-const displayNotes = (notes) => {
+function displayNotes(notes) {
   let listHTML = '';
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i];
     listHTML +=
-      '<article class="article">' +
+      '<article class="article" data-article_id="' +
+      note.timestamp +
+      '">' +
       '<div class="text-muted">' +
       new Date(note.timestamp).toLocaleString('ru', options).toString() +
+      ' ' +
+      new Date(note.timeedit).toLocaleString('ru', options).toString() +
       '</div>';
     listHTML +=
       '<h2>' +
@@ -154,14 +160,14 @@ const displayNotes = (notes) => {
       '<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="' +
       note.timestamp +
       '">Удалить пост</button>' +
-      '<button type="button" class="article__btn article__btn_edit" data-id="' +
+      '<button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="' +
       note.timestamp +
       '">Редактировать пост</button>' +
       '</article>';
   }
   posts.innerHTML = listHTML;
   // Отображение
-};
+}
 
 let reverseOrder = true;
 
@@ -182,7 +188,7 @@ const deleteNote = (event) => {
   const valueTimestamp = parseInt(event.target.getAttribute('data-id'));
 
   // открываем транзакцию чтения/записи БД, готовую к удалению данных
-  const tx = db.transaction(['posts'], 'readwrite');
+  let tx = db.transaction(['posts'], 'readwrite');
   // описываем обработчики на завершение транзакции
   tx.oncomplete = (event) => {
     console.log('Transaction completed.');
@@ -205,6 +211,88 @@ const deleteNote = (event) => {
     deleteRequest.onsuccess = (event) => {
       // обрабатываем успех нашего запроса на удаление
       console.log('Delete request successful');
+    };
+  };
+};
+
+// Редактирование заметки
+const editForm = document.createElement('form');
+editForm.classList.add('edit-form');
+editForm.setAttribute('action', '#');
+
+const inputEditTitle = document.createElement('input');
+inputEditTitle.classList.add('title-edit');
+inputEditTitle.setAttribute('type', 'text');
+inputEditTitle.setAttribute('name', 'title-edit');
+
+const textEditMessage = document.createElement('textarea');
+textEditMessage.classList.add('note-edit');
+textEditMessage.setAttribute('name', 'note-edit');
+
+const sendEditBtn = document.createElement('input');
+sendEditBtn.classList.add('send-edit-btn');
+sendEditBtn.setAttribute('type', 'submit');
+
+editForm.append(inputEditTitle);
+editForm.append(textEditMessage);
+editForm.append(sendEditBtn);
+
+const editNote = (event) => {
+  const valueTimestamp = parseInt(event.target.getAttribute('data-id'));
+  const editArticle = document.querySelector(`article[data-article_id="${valueTimestamp}"]`);
+
+  // открываем транзакцию чтения/записи БД, готовую к удалению данных
+  let tx = db.transaction(['posts'], 'readwrite');
+  // описываем обработчики на завершение транзакции
+  tx.oncomplete = (event) => {
+    console.log('Transaction completed.');
+    // getAndDisplayNotes(db);
+  };
+
+  tx.onerror = function (event) {
+    alert('error in cursor request ' + event.target.errorCode);
+  };
+
+  // создаем хранилище объектов по транзакции
+  const store = tx.objectStore('posts');
+  const index = store.index('timestamp');
+  // получаем ключ записи
+  const req = index.getKey(valueTimestamp);
+
+  req.onsuccess = (event) => {
+    const key = req.result;
+    console.log(key);
+
+    let editRequest = store.get(key);
+
+    editRequest.onsuccess = (event) => {
+      // обрабатываем успех нашего запроса на редактирование
+      editArticle.append(editForm);
+      let title = event.target.result.title;
+      let message = event.target.result.text;
+      inputEditTitle.value = title;
+      textEditMessage.value = message;
+      sendEditBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        let note = {
+          title: inputEditTitle.value,
+          text: textEditMessage.value,
+          timestamp: valueTimestamp,
+          timeedit: Date.now(),
+        };
+        let tx = db.transaction(['posts'], 'readwrite');
+        let store = tx.objectStore('posts');
+        store.put(note, key);
+        tx.oncomplete = () => {
+          editForm.reset();
+          getAndDisplayNotes(db);
+        };
+        tx.onerror = (event) => {
+          alert('error storing note ' + event.target.errorCode);
+        };
+        console.log('Submit');
+      });
+      console.log('Edit request successful');
     };
   };
 };
