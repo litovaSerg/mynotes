@@ -25,13 +25,13 @@ dbReq.onerror = (event) => {
   alert('error opening database ' + event.target.errorCode);
 };
 
-const addStickyNote = (db, title, message) => {
+const addStickyNote = (db, title, message, important = 'off') => {
   // Запустим транзакцию базы данных и получите хранилище объектов Notes
   let tx = db.transaction(['posts'], 'readwrite');
   let store = tx.objectStore('posts');
 
   // Добаляем заметку в хранилище объектов
-  let note = { title: title, text: message, timestamp: Date.now() };
+  let note = { title: title, text: message, timestamp: Date.now(), important: important };
   store.add(note);
 
   // Ожидаем завершения транзакции базы данных
@@ -54,39 +54,19 @@ dbReq.onsuccess = (event) => {
   console.log('Recorded');
 };
 
-// Отправка заметки 1 вариант
-/*  const submitForm = document.querySelector('.send-post');
-submitForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const input = submitForm.querySelector('.input');
-  const textarea = submitForm.querySelector('.textarea');
-  let title = input.value;
-  let message = textarea.value;
-  if (input.value.length == 0 || textarea.value == 0) {
-    // alert('none');
-    const emptyField = document.createElement('div');
-    emptyField.classList.add('empty-field');
-    submitForm.prepend(emptyField);
-    emptyField.textContent = 'Не оставляйте поля пустыми';
-    setTimeout(() => emptyField.remove(), 1500);
-  } else {
-    addStickyNote(db, title, message);
-    textarea.value = '';
-    input.value = '';
-  }
-});
-*/
-
-// Отправка заметки 2 вариант
+// Отправка заметки
 
 const submitForm = document.querySelector('.send-post');
 submitForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const noteContent = Object.fromEntries(new FormData(submitForm));
   console.log(noteContent);
-  const title = noteContent[submitForm.querySelector('input').getAttribute('name')];
-  const message = noteContent[submitForm.querySelector('textarea').getAttribute('name')];
-  addStickyNote(db, title, message);
+  // const title = noteContent[submitForm.querySelector('input').getAttribute('name')];
+  const title = noteContent.title;
+  const message = noteContent.content;
+  const importantMessage = noteContent.important;
+  console.log(importantMessage);
+  addStickyNote(db, title, message, importantMessage);
   submitForm.reset();
 });
 
@@ -142,17 +122,19 @@ function displayNotes(notes) {
   let listHTML = '';
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i];
-    // if (!note.timeedit) {
-    //   console.log('НЕ РЕДАКТИРОВАЛОСЬ');
-    // }
     listHTML +=
-      '<article class="article" data-article_id="' +
+      `<article class="${note.important === 'on' ? 'red-article' : 'article'}" data-article_id="` +
       note.timestamp +
       '">' +
       '<div class="text-muted">' +
-      'Создано: '+new Date(note.timestamp).toLocaleString('ru', options).toString() +
+      'Создано: ' +
+      new Date(note.timestamp).toLocaleString('ru', options).toString() +
       ' ' +
-      `${note.timeedit === undefined ? '' : '| Редактировалось: '+new Date(note.timeedit).toLocaleString('ru', options).toString()}` +
+      `${
+        note.timeedit === undefined
+          ? ''
+          : '| Редактировалось: ' + new Date(note.timeedit).toLocaleString('ru', options).toString()
+      }` +
       // new Date(note.timeedit).toLocaleString('ru', options).toString() +
       '</div>' +
       '<h2>' +
@@ -242,7 +224,6 @@ editForm.append(inputEditTitle);
 editForm.append(textEditMessage);
 editForm.append(sendEditBtn);
 
-
 const editNote = (event) => {
   const valueTimestamp = parseInt(event.target.getAttribute('data-id'));
   const editArticle = document.querySelector(`article[data-article_id="${valueTimestamp}"]`);
@@ -275,6 +256,7 @@ const editNote = (event) => {
       editArticle.append(editForm);
       inputEditTitle.value = event.target.result.title;
       textEditMessage.value = event.target.result.text;
+      const importantArticle = event.target.result.important;
 
       editArticle.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -283,7 +265,13 @@ const editNote = (event) => {
         const message = articleEditContent['article-edit'];
         const tx = db.transaction(['posts'], 'readwrite');
         const store = tx.objectStore('posts');
-        const editedArticle = { title: title, text: message, timestamp: valueTimestamp, timeedit: Date.now() };
+        const editedArticle = {
+          title: title,
+          text: message,
+          timestamp: valueTimestamp,
+          timeedit: Date.now(),
+          important: importantArticle,
+        };
 
         store.put(editedArticle, key);
         editForm.reset();
