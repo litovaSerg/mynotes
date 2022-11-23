@@ -22,6 +22,7 @@ p {
 h2 {
   font-size: 2rem;
 }
+
 .container {
   width: 100%;
   max-width: 1400px;
@@ -106,14 +107,18 @@ h2 {
 }
 
 .submit-btn {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   padding: 0.5rem 1rem;
   border: 1px solid rgb(7, 114, 43);
-}
-.submit-btn:hover {
-  transition: all 0.2s ease;
   background-color: rgb(7, 114, 43);
   color: rgb(240, 248, 255);
+}
+.submit-btn:hover {
+  transition: all 0.5s ease;
+  background-color: transparent;
+  color: black;
+
+
 }
 .text-muted {
   font-size: 1.2rem;
@@ -130,17 +135,23 @@ h2 {
 }
 .radio {
 }
-.send-post,
-.edit-form {
+.send-post,.forms__reverse{
   width: 50%;
+}
+fieldset {
+  margin: 0;
 }
 .input,
 .textarea,
 .title-edit,
-.note-edit {
+.article-edit {
   width: 100%;
   box-sizing: border-box;
   padding: 1rem;
+  resize: none;
+}
+.article-edit {
+  min-height: 20rem;
 }
 .textarea {
   /* display: block; */

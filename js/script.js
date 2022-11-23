@@ -51,6 +51,7 @@ const addStickyNote = (db, title, message) => {
 dbReq.onsuccess = (event) => {
   db = event.target.result;
   getAndDisplayNotes(db);
+  console.log('Recorded');
 };
 
 // Отправка заметки 1 вариант
@@ -77,12 +78,12 @@ submitForm.addEventListener('submit', (event) => {
 */
 
 // Отправка заметки 2 вариант
-const submitForm = document.querySelector('.send-post');
 
+const submitForm = document.querySelector('.send-post');
 submitForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const formDate = new FormData(submitForm);
-  const noteContent = Object.fromEntries(formDate);
+  const noteContent = Object.fromEntries(new FormData(submitForm));
+  console.log(noteContent);
   const title = noteContent[submitForm.querySelector('input').getAttribute('name')];
   const message = noteContent[submitForm.querySelector('textarea').getAttribute('name')];
   addStickyNote(db, title, message);
@@ -129,7 +130,7 @@ const getAndDisplayNotes = (db) => {
 // Отображение
 const options = {
   year: 'numeric',
-  month: 'long',
+  month: 'numeric',
   day: 'numeric',
   timezone: 'UTC',
   hour: 'numeric',
@@ -141,16 +142,19 @@ function displayNotes(notes) {
   let listHTML = '';
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i];
+    // if (!note.timeedit) {
+    //   console.log('НЕ РЕДАКТИРОВАЛОСЬ');
+    // }
     listHTML +=
       '<article class="article" data-article_id="' +
       note.timestamp +
       '">' +
       '<div class="text-muted">' +
-      new Date(note.timestamp).toLocaleString('ru', options).toString() +
+      'Создано: '+new Date(note.timestamp).toLocaleString('ru', options).toString() +
       ' ' +
-      new Date(note.timeedit).toLocaleString('ru', options).toString() +
-      '</div>';
-    listHTML +=
+      `${note.timeedit === undefined ? '' : '| Редактировалось: '+new Date(note.timeedit).toLocaleString('ru', options).toString()}` +
+      // new Date(note.timeedit).toLocaleString('ru', options).toString() +
+      '</div>' +
       '<h2>' +
       note.title +
       '</h2>' +
@@ -226,22 +230,23 @@ inputEditTitle.setAttribute('type', 'text');
 inputEditTitle.setAttribute('name', 'title-edit');
 
 const textEditMessage = document.createElement('textarea');
-textEditMessage.classList.add('note-edit');
-textEditMessage.setAttribute('name', 'note-edit');
+textEditMessage.classList.add('article-edit');
+textEditMessage.setAttribute('name', 'article-edit');
 
 const sendEditBtn = document.createElement('input');
-sendEditBtn.classList.add('send-edit-btn');
+sendEditBtn.classList.add('post', 'submit-btn');
 sendEditBtn.setAttribute('type', 'submit');
+sendEditBtn.setAttribute('value', 'отправить');
 
 editForm.append(inputEditTitle);
 editForm.append(textEditMessage);
 editForm.append(sendEditBtn);
 
+
 const editNote = (event) => {
   const valueTimestamp = parseInt(event.target.getAttribute('data-id'));
   const editArticle = document.querySelector(`article[data-article_id="${valueTimestamp}"]`);
-
-  // открываем транзакцию чтения/записи БД, готовую к удалению данных
+  // открываем транзакцию чтения/записи БД, готовую к редактированию данных
   let tx = db.transaction(['posts'], 'readwrite');
   // описываем обработчики на завершение транзакции
   tx.oncomplete = (event) => {
@@ -263,36 +268,33 @@ const editNote = (event) => {
     const key = req.result;
     console.log(key);
 
-    let editRequest = store.get(key);
+    const editRequest = store.get(key);
 
     editRequest.onsuccess = (event) => {
       // обрабатываем успех нашего запроса на редактирование
       editArticle.append(editForm);
-      let title = event.target.result.title;
-      let message = event.target.result.text;
-      inputEditTitle.value = title;
-      textEditMessage.value = message;
-      sendEditBtn.addEventListener('click', (event) => {
+      inputEditTitle.value = event.target.result.title;
+      textEditMessage.value = event.target.result.text;
+
+      editArticle.addEventListener('submit', (event) => {
         event.preventDefault();
-        let note = {
-          title: inputEditTitle.value,
-          text: textEditMessage.value,
-          timestamp: valueTimestamp,
-          timeedit: Date.now(),
-        };
-        let tx = db.transaction(['posts'], 'readwrite');
-        let store = tx.objectStore('posts');
-        store.put(note, key);
+        const articleEditContent = Object.fromEntries(new FormData(editForm));
+        const title = articleEditContent['title-edit'];
+        const message = articleEditContent['article-edit'];
+        const tx = db.transaction(['posts'], 'readwrite');
+        const store = tx.objectStore('posts');
+        const editedArticle = { title: title, text: message, timestamp: valueTimestamp, timeedit: Date.now() };
+
+        store.put(editedArticle, key);
+        editForm.reset();
+
         tx.oncomplete = () => {
-          editForm.reset();
           getAndDisplayNotes(db);
         };
         tx.onerror = (event) => {
           alert('error storing note ' + event.target.errorCode);
         };
-        console.log('Submit');
       });
-      console.log('Edit request successful');
     };
   };
 };
