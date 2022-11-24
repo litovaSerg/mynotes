@@ -1,9 +1,6 @@
 'use strict';
-
 const posts = document.querySelector('.posts');
-
 //  Indexed DB
-
 let db;
 let dbReq = indexedDB.open('DB', 1);
 dbReq.onupgradeneeded = (event) => {
@@ -55,7 +52,6 @@ dbReq.onsuccess = (event) => {
 };
 
 // Отправка заметки
-
 const submitForm = document.querySelector('.send-post');
 submitForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -142,13 +138,14 @@ function displayNotes(notes) {
       '</h2>' +
       '<p>' +
       note.text +
-      '</p>' +
+      '</p>' + '<div class="article__button-block">'+
       '<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="' +
       note.timestamp +
       '">Удалить пост</button>' +
       '<button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="' +
       note.timestamp +
       '">Редактировать пост</button>' +
+      '</div>'+
       '</article>';
   }
   posts.innerHTML = listHTML;

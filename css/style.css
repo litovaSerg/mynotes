@@ -26,8 +26,8 @@ h2 {
 .container {
   width: 100%;
   max-width: 1400px;
-  margin: 1.6rem auto;
-  padding: 0 1rem;
+  margin: 0 auto;
+  padding: 1rem;
   display: grid;
   grid-template-areas: 'header header' 'articles sidebar' 'form form' 'footer footer';
   grid-template-rows: repeat(4, max-content);
@@ -70,14 +70,15 @@ h2 {
 .footer {
   grid-area: footer;
 }
-.article, .red-article {
+.article,
+.red-article {
   padding: 1rem;
   background-color: rgba(237, 239, 241, 0.8);
   border-radius: 1rem;
 }
 
 .red-article {
-  background-color: rgba(233, 62, 19,0.2);
+  background-color: rgba(233, 62, 19, 0.2);
 }
 .article__btn,
 .submit-btn {
@@ -122,8 +123,6 @@ h2 {
   transition: all 0.5s ease;
   background-color: transparent;
   color: black;
-
-
 }
 .text-muted {
   font-size: 1.2rem;
@@ -132,7 +131,8 @@ h2 {
 .forms__reverse,
 .input,
 .title-edit,
-.article,.red-article {
+.article,
+.red-article {
   margin-bottom: 1rem;
 }
 .title-edit {
@@ -140,7 +140,8 @@ h2 {
 }
 .radio {
 }
-.send-post,.forms__reverse{
+.send-post,
+.forms__reverse {
   width: 50%;
 }
 fieldset {
@@ -162,4 +163,31 @@ fieldset {
   /* display: block; */
 }
 .post {
+}
+
+/* Media Queries */
+@media all and (orientation: portrait), (max-width: 575px) {
+  .container {
+    display: block;
+    width: 100%;
+  }
+  .header {
+    text-align: center;
+  }
+  .text-muted,
+  .text-muted ~ h2 {
+    text-align: center;
+  }
+  .article p,
+  .red-article p {
+    font-size: 2rem;
+  }
+  .article__button-block {
+    display: flex;
+    justify-content: center;
+  }
+  .send-post,
+  .forms__reverse {
+    width: 100%;
+  }
 }
