@@ -169,7 +169,7 @@ fieldset {
 @media all and (orientation: portrait), (max-width: 575px) {
   .container {
     display: block;
-    width: 100%;
+    width: 95%;
   }
   .header {
     text-align: center;
@@ -181,13 +181,25 @@ fieldset {
   .article p,
   .red-article p {
     font-size: 2rem;
+    margin-bottom: 2rem;
   }
   .article__button-block {
     display: flex;
     justify-content: center;
   }
+  .article__btn {
+    padding: 1rem 2rem;
+  }
   .send-post,
   .forms__reverse {
     width: 100%;
+  }
+  .textarea {
+    margin-bottom: 1rem;
+  }
+  .submit-btn {
+    display: block;
+    margin: 0 auto 1rem;
+    padding: 1rem 2rem;
   }
 }
