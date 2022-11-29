@@ -56,8 +56,6 @@ const submitForm = document.querySelector('.send-post');
 submitForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const noteContent = Object.fromEntries(new FormData(submitForm));
-  console.log(noteContent);
-  // const title = noteContent[submitForm.querySelector('input').getAttribute('name')];
   const title = noteContent.title;
   const message = noteContent.content;
   const importantMessage = noteContent.important;
