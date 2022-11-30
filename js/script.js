@@ -31,11 +31,6 @@ const addStickyNote = (db, title, message, important = 'off') => {
   let note = { title: title, text: message, timestamp: Date.now(), important: important };
   store.add(note);
 
-  // Ожидаем завершения транзакции базы данных
-  // tx.oncomplete = () => {
-  //   console.log('stored note!');
-  // };
-
   tx.oncomplete = () => {
     getAndDisplayNotes(db);
   };
@@ -52,16 +47,23 @@ dbReq.onsuccess = (event) => {
 };
 
 // Отправка заметки
-const submitForm = document.querySelector('.send-post');
+const submitForm = document.querySelector('.forms__send-post');
+const addPost = document.getElementById('call-submit-form');
+addPost.addEventListener('click', () => {
+  submitForm.classList.add('forms__send-post_show');
+  addPost.classList.add('forms__submit-btn_hide');
+});
+
 submitForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const noteContent = Object.fromEntries(new FormData(submitForm));
   const title = noteContent.title;
   const message = noteContent.content;
   const importantMessage = noteContent.important;
-  console.log(importantMessage);
   addStickyNote(db, title, message, importantMessage);
   submitForm.reset();
+  submitForm.classList.remove('forms__send-post_show');
+  addPost.classList.remove('forms__submit-btn_hide');
 });
 
 // Извлечение
@@ -136,14 +138,15 @@ function displayNotes(notes) {
       '</h2>' +
       '<p>' +
       note.text +
-      '</p>' + '<div class="article__button-block">'+
+      '</p>' +
+      '<div class="article__button-block">' +
       '<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="' +
       note.timestamp +
       '">Удалить пост</button>' +
       '<button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="' +
       note.timestamp +
       '">Редактировать пост</button>' +
-      '</div>'+
+      '</div>' +
       '</article>';
   }
   posts.innerHTML = listHTML;
@@ -211,7 +214,7 @@ textEditMessage.classList.add('article-edit');
 textEditMessage.setAttribute('name', 'article-edit');
 
 const sendEditBtn = document.createElement('input');
-sendEditBtn.classList.add('post', 'submit-btn');
+sendEditBtn.classList.add('forms__submit-btn');
 sendEditBtn.setAttribute('type', 'submit');
 sendEditBtn.setAttribute('value', 'отправить');
 
