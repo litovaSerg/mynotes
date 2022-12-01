@@ -1,5 +1,4 @@
 'use strict';
-const posts = document.querySelector('.posts');
 //  Indexed DB
 let db;
 let dbReq = indexedDB.open('DB', 1);
@@ -113,7 +112,7 @@ const options = {
   minute: 'numeric',
   second: 'numeric',
 };
-
+const posts = document.querySelector('.posts');
 function displayNotes(notes) {
   let listHTML = '';
   for (let i = 0; i < notes.length; i++) {
@@ -138,14 +137,15 @@ function displayNotes(notes) {
       '</h2>' +
       '<p>' +
       note.text +
-      '</p>' + '<div class="article__button-block">'+
+      '</p>' +
+      '<div class="article__button-block">' +
       '<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="' +
       note.timestamp +
       '">Удалить пост</button>' +
       '<button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="' +
       note.timestamp +
       '">Редактировать пост</button>' +
-      '</div>'+
+      '</div>' +
       '</article>';
   }
   posts.innerHTML = listHTML;
@@ -153,7 +153,6 @@ function displayNotes(notes) {
 }
 
 let reverseOrder = true;
-
 const radioBtn = document.querySelectorAll('.radio');
 
 let flipNoteOrder = (notes) => {
