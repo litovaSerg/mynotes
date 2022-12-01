@@ -30,11 +30,6 @@ const addStickyNote = (db, title, message, important = 'off') => {
   let note = { title: title, text: message, timestamp: Date.now(), important: important };
   store.add(note);
 
-  // Ожидаем завершения транзакции базы данных
-  // tx.oncomplete = () => {
-  //   console.log('stored note!');
-  // };
-
   tx.oncomplete = () => {
     getAndDisplayNotes(db);
   };
@@ -51,18 +46,23 @@ dbReq.onsuccess = (event) => {
 };
 
 // Отправка заметки
-const submitForm = document.querySelector('.send-post');
+const submitForm = document.querySelector('.forms__send-post');
+const addPost = document.getElementById('call-submit-form');
+addPost.addEventListener('click', () => {
+  submitForm.classList.add('forms__send-post_show');
+  addPost.classList.add('forms__submit-btn_hide');
+});
+
 submitForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const noteContent = Object.fromEntries(new FormData(submitForm));
-  console.log(noteContent);
-  // const title = noteContent[submitForm.querySelector('input').getAttribute('name')];
   const title = noteContent.title;
   const message = noteContent.content;
   const importantMessage = noteContent.important;
-  console.log(importantMessage);
   addStickyNote(db, title, message, importantMessage);
   submitForm.reset();
+  submitForm.classList.remove('forms__send-post_show');
+  addPost.classList.remove('forms__submit-btn_hide');
 });
 
 // Извлечение
@@ -212,7 +212,7 @@ textEditMessage.classList.add('article-edit');
 textEditMessage.setAttribute('name', 'article-edit');
 
 const sendEditBtn = document.createElement('input');
-sendEditBtn.classList.add('post', 'submit-btn');
+sendEditBtn.classList.add('forms__submit-btn');
 sendEditBtn.setAttribute('type', 'submit');
 sendEditBtn.setAttribute('value', 'отправить');
 

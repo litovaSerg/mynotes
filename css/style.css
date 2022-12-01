@@ -27,7 +27,8 @@ h2 {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1rem;
+  box-sizing: border-box;
+  padding: 0 1rem;
   display: grid;
   grid-template-areas: 'header header' 'articles sidebar' 'form form' 'footer footer';
   grid-template-rows: repeat(4, max-content);
@@ -42,17 +43,10 @@ h2 {
   box-shadow: 1px 1px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
-/* .content {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 4fr 1fr;
-  gap: 1rem;
-} */
 .header,
 .content,
 .forms,
 .footer {
-  /* border: 1px solid black; */
 }
 .header {
   padding-left: 1rem;
@@ -73,7 +67,7 @@ h2 {
 .article,
 .red-article {
   padding: 1rem;
-  background-color: rgba(237, 239, 241, 0.8);
+  background-color: rgba(246, 250, 253, 0.8);
   border-radius: 1rem;
 }
 
@@ -81,7 +75,7 @@ h2 {
   background-color: rgba(233, 62, 19, 0.2);
 }
 .article__btn,
-.submit-btn {
+.forms__submit-btn {
   margin-right: 1rem;
   padding: 0.5rem;
   border-radius: 4px;
@@ -112,17 +106,20 @@ h2 {
   width: 50%; */
 }
 
-.submit-btn {
+.forms__submit-btn {
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
   border: 1px solid rgb(7, 114, 43);
   background-color: rgb(7, 114, 43);
   color: rgb(240, 248, 255);
 }
-.submit-btn:hover {
+.forms__submit-btn:hover {
   transition: all 0.5s ease;
   background-color: transparent;
   color: black;
+}
+.forms__submit-btn_hide {
+  display: none;
 }
 .text-muted {
   font-size: 1.2rem;
@@ -140,9 +137,15 @@ h2 {
 }
 .radio {
 }
-.send-post,
+.forms__send-post,
 .forms__reverse {
   width: 50%;
+}
+.forms__send-post {
+  display: none;
+}
+.forms__send-post_show {
+  display: block;
 }
 fieldset {
   margin: 0;
@@ -169,7 +172,6 @@ fieldset {
 @media all and (orientation: portrait), (max-width: 575px) {
   .container {
     display: block;
-    width: 95%;
   }
   .header {
     text-align: center;
@@ -190,14 +192,14 @@ fieldset {
   .article__btn {
     padding: 1rem 2rem;
   }
-  .send-post,
+  .forms__send-post,
   .forms__reverse {
     width: 100%;
   }
   .textarea {
     margin-bottom: 1rem;
   }
-  .submit-btn {
+  .forms__submit-btn {
     display: block;
     margin: 0 auto 1rem;
     padding: 1rem 2rem;
