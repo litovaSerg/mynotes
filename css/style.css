@@ -79,7 +79,7 @@ h2 {
   margin-right: 1rem;
   padding: 0.5rem;
   border-radius: 4px;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -161,6 +161,7 @@ fieldset {
 }
 .article-edit {
   min-height: 20rem;
+  margin-bottom: 1rem;
 }
 .textarea {
   /* display: block; */
@@ -191,6 +192,7 @@ fieldset {
   }
   .article__btn {
     padding: 1rem 2rem;
+    font-size: 1.2rem;
   }
   .forms__send-post,
   .forms__reverse {

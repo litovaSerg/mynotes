@@ -94,6 +94,7 @@ const getAndDisplayNotes = (db) => {
       // Если у нас нулевой курсор, это означает, что мы получили
       // все данные, поэтому отображаем заметки, которые мы получили.
       displayNotes(allNotes);
+      console.log(allNotes);
     }
   };
 
@@ -112,46 +113,38 @@ const options = {
   minute: 'numeric',
   second: 'numeric',
 };
+
+// Отображение
 const posts = document.querySelector('.posts');
 function displayNotes(notes) {
   let listHTML = '';
-  for (let i = 0; i < notes.length; i++) {
-    let note = notes[i];
+  notes.forEach((item) => {
     listHTML +=
-      `<article class="${note.important === 'on' ? 'red-article' : 'article'}" data-article_id="` +
-      note.timestamp +
-      '">' +
-      '<div class="text-muted">' +
-      'Создано: ' +
-      new Date(note.timestamp).toLocaleString('ru', options).toString() +
-      ' ' +
-      `${
-        note.timeedit === undefined
-          ? ''
-          : '| Редактировалось: ' + new Date(note.timeedit).toLocaleString('ru', options).toString()
-      }` +
-      // new Date(note.timeedit).toLocaleString('ru', options).toString() +
-      '</div>' +
-      '<h2>' +
-      note.title +
-      '</h2>' +
-      '<p>' +
-      note.text +
-      '</p>' +
-      '<div class="article__button-block">' +
-      '<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="' +
-      note.timestamp +
-      '">Удалить пост</button>' +
-      '<button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="' +
-      note.timestamp +
-      '">Редактировать пост</button>' +
-      '</div>' +
-      '</article>';
-  }
-  posts.innerHTML = listHTML;
-  // Отображение
-}
+      `<article class="${item.important === 'on' ? 'red-article' : 'article'}" data-article_id="${item.timestamp}">` +
+      `<div class="text-muted">${
+        'Создано: ' +
+        new Date(item.timestamp).toLocaleString('ru', options).toString() +
+        ' ' +
+        `${
+          item.timeedit === undefined
+            ? ''
+            : '| Редактировалось: ' + new Date(item.timeedit).toLocaleString('ru', options).toString()
+        }`
+      }</div>` +
+      `<h2>${item.title}</h2>` +
+      `<p>${item.text}</p>` +
+      `<div class="article__button-block">` +
+      `<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="${item.timestamp}">
+      Удалить пост</button>` +
+      `<button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="${item.timestamp}"
+      >Редактировать пост</button>` +
+      `</div>` +
+      `</article>`;
+    posts.innerHTML = listHTML;
+  });
 
+}
+// Вывод заметок по времени добавления
 let reverseOrder = true;
 const radioBtn = document.querySelectorAll('.radio');
 
