@@ -99,6 +99,14 @@ h2 {
   transition: all 0.2s ease;
   background-color: rgb(236, 174, 38);
 }
+.article__read-more {
+  display: inline-block;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.article__read-more:hover{
+  color: brown;
+}
 .title-edit,
 .note-edit {
   /* box-sizing: border-box;

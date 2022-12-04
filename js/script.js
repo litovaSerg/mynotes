@@ -42,7 +42,6 @@ const addStickyNote = (db, title, message, important = 'off') => {
 dbReq.onsuccess = (event) => {
   db = event.target.result;
   getAndDisplayNotes(db);
-  console.log('Recorded');
 };
 
 // Отправка заметки
@@ -94,7 +93,6 @@ const getAndDisplayNotes = (db) => {
       // Если у нас нулевой курсор, это означает, что мы получили
       // все данные, поэтому отображаем заметки, которые мы получили.
       displayNotes(allNotes);
-      console.log(allNotes);
     }
   };
 
@@ -132,7 +130,12 @@ function displayNotes(notes) {
         }`
       }</div>` +
       `<h2>${item.title}</h2>` +
-      `<p>${item.text}</p>` +
+      `<p>${
+        item.text.length > 300
+          ? item.text.slice(0, 300) + '<a href="#" class="article__read-more">Читать далее</a>'
+          : item.text
+      }</p>` +
+      // `<p>${item.text}</p>` +
       `<div class="article__button-block">` +
       `<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="${item.timestamp}">
       Удалить пост</button>` +
@@ -142,7 +145,6 @@ function displayNotes(notes) {
       `</article>`;
     posts.innerHTML = listHTML;
   });
-
 }
 // Вывод заметок по времени добавления
 let reverseOrder = true;
@@ -275,3 +277,5 @@ const editNote = (event) => {
     };
   };
 };
+
+// Вывод длинной заметки на отдельной странице
