@@ -100,7 +100,7 @@ h2 {
   background-color: rgb(236, 174, 38);
 }
 .article__read-more {
-  display: inline-block;
+  display: block;
   text-decoration: none;
   text-transform: uppercase;
 }

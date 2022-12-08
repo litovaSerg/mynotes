@@ -132,7 +132,7 @@ function displayNotes(notes) {
       `<h2>${item.title}</h2>` +
       `<p>${
         item.text.length > 300
-          ? item.text.slice(0, 300) + '<a href="#" class="article__read-more">Читать далее</a>'
+          ? item.text.slice(0, 300) + `<a href="../pages/article.html?${item.timestamp}" class="article__read-more">Читать далее</a>`
           : item.text
       }</p>` +
       // `<p>${item.text}</p>` +
@@ -146,6 +146,7 @@ function displayNotes(notes) {
     posts.innerHTML = listHTML;
   });
 }
+
 // Вывод заметок по времени добавления
 let reverseOrder = true;
 const radioBtn = document.querySelectorAll('.radio');
