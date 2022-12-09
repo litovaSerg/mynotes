@@ -17,16 +17,20 @@ h4,
 h5,
 h6,
 p {
-  margin: 0 0 1rem 0;
+  margin: 0 0 2rem 0;
 }
 h2 {
   font-size: 2rem;
 }
-
+a:link,
+a:visited,
+.article__title {
+  color: #333;
+}
 .container {
   width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 1rem auto;
   box-sizing: border-box;
   padding: 0 1rem;
   display: grid;
@@ -70,9 +74,15 @@ h2 {
   background-color: rgba(246, 250, 253, 0.8);
   border-radius: 1rem;
 }
-
+.article__title-link {
+  text-decoration: none;
+}
 .red-article {
   background-color: rgba(233, 62, 19, 0.2);
+}
+
+.article__button-block {
+  display: flex;
 }
 .article__btn,
 .forms__submit-btn {
@@ -85,11 +95,11 @@ h2 {
 }
 
 .article__btn_del {
-  border: 1px solid rgb(170, 4, 4);
+  border: 1px solid brown;
 }
 .article__btn_del:hover {
   transition: all 0.2s ease;
-  background-color: rgb(170, 4, 4);
+  background-color: brown;
   color: rgb(240, 248, 255);
 }
 .article__btn_edit {
@@ -99,12 +109,21 @@ h2 {
   transition: all 0.2s ease;
   background-color: rgb(236, 174, 38);
 }
+.article__footer {
+  display: flex;
+  justify-content: space-between;
+}
 .article__read-more {
   display: block;
   text-decoration: none;
   text-transform: uppercase;
 }
-.article__read-more:hover{
+a.article__read-more{
+  font-size: 1.6rem;
+}
+.article__read-more:hover,
+.article__title-link:hover {
+  transition: all 0.4s ease;
   color: brown;
 }
 .title-edit,
@@ -198,6 +217,7 @@ fieldset {
     display: flex;
     justify-content: center;
   }
+
   .article__btn {
     padding: 1rem 2rem;
     font-size: 1.2rem;

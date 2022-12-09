@@ -129,19 +129,17 @@ function displayNotes(notes) {
             : '| Редактировалось: ' + new Date(item.timeedit).toLocaleString('ru', options).toString()
         }`
       }</div>` +
-      `<h2>${item.title}</h2>` +
+      `<h2><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__title-link">${item.title}</a></h2>` +
       `<p>${
         item.text.length > 300
-          ? item.text.slice(0, 300) + `<a href="../mynotes/pages/article.html?${item.timestamp}" class="article__read-more">Читать далее</a>`
+          ? item.text.slice(0, 300)
           : item.text
-      }</p>` +
-      // `<p>${item.text}</p>` +
-      `<div class="article__button-block">` +
-      `<button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="${item.timestamp}">
-      Удалить пост</button>` +
-      `<button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="${item.timestamp}"
-      >Редактировать пост</button>` +
-      `</div>` +
+      }</p>` + `<div class="article__footer">
+      <div class="article__button-block"><button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="${item.timestamp}">Удалить пост</button>
+      <button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="${item.timestamp}"
+      >Редактировать пост</button></div>
+      <div><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__read-more">Читать далее >></a></div>
+      </div>`+
       `</article>`;
     posts.innerHTML = listHTML;
   });
