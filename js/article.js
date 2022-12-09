@@ -31,7 +31,6 @@ openRequest.onsuccess = () => {
     const requestPost = req.result;
     console.log(requestPost);
     const postCreated = new Date(requestPost.timestamp).toLocaleString('ru', timeOptions).toString();
-    // const postEdited = new Date(requestPost.timeedit).toLocaleString('ru', timeOptions).toString();
     const postEdited =
     requestPost.timeedit === undefined
       ? ''
