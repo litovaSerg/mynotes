@@ -115,34 +115,36 @@ const options = {
 // Отображение
 const posts = document.querySelector('.posts');
 function displayNotes(notes) {
-  let listHTML = '';
-  notes.forEach((item) => {
-    listHTML +=
-      `<article class="${item.important === 'on' ? 'red-article' : 'article'}" data-article_id="${item.timestamp}">` +
-      `<div class="text-muted">${
-        'Создано: ' +
-        new Date(item.timestamp).toLocaleString('ru', options).toString() +
-        ' ' +
-        `${
-          item.timeedit === undefined
-            ? ''
-            : '| Редактировалось: ' + new Date(item.timeedit).toLocaleString('ru', options).toString()
-        }`
-      }</div>` +
-      `<h2><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__title-link">${item.title}</a></h2>` +
-      `<p>${
-        item.text.length > 300
-          ? item.text.slice(0, 300)
-          : item.text
-      }</p>` + `<div class="article__footer">
-      <div class="article__button-block"><button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="${item.timestamp}">Удалить пост</button>
-      <button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="${item.timestamp}"
-      >Редактировать пост</button></div>
-      <div><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__read-more">Читать далее >></a></div>
-      </div>`+
-      `</article>`;
+  if (notes.length === 0) {
+    let listHTML = `<article class="article">Здесь пока еще пусто. Добавьте заметку</article>`;
     posts.innerHTML = listHTML;
-  });
+  } else {
+    let listHTML = ``;
+    notes.forEach((item) => {
+      listHTML +=
+        `<article class="${item.important === 'on' ? 'red-article' : 'article'}" data-article_id="${item.timestamp}">` +
+        `<div class="text-muted">${
+          'Создано: ' +
+          new Date(item.timestamp).toLocaleString('ru', options).toString() +
+          ' ' +
+          `${
+            item.timeedit === undefined
+              ? ''
+              : '| Редактировалось: ' + new Date(item.timeedit).toLocaleString('ru', options).toString()
+          }`
+        }</div>` +
+        `<h2><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__title-link">${item.title}</a></h2>` +
+        `<p>${item.text.length > 300 ? item.text.slice(0, 300) : item.text}</p>` +
+        `<div class="article__footer">
+        <div class="article__button-block"><button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="${item.timestamp}">Удалить пост</button>
+        <button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="${item.timestamp}"
+        >Редактировать пост</button></div>
+        <div><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__read-more">Читать далее >></a></div>
+        </div>` +
+        `</article>`;
+      posts.innerHTML = listHTML;
+    });
+  }
 }
 
 // Вывод заметок по времени добавления
@@ -187,6 +189,8 @@ const deleteNote = (event) => {
     deleteRequest.onsuccess = (event) => {
       // обрабатываем успех нашего запроса на удаление
       console.log('Delete request successful');
+      event.preventDefault();
+      getAndDisplayNotes(db);
     };
   };
 };
