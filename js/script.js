@@ -134,7 +134,7 @@ function displayNotes(notes) {
           }`
         }</div>` +
         `<h2><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__title-link">${item.title}</a></h2>` +
-        `<p>${item.text.length > 300 ? item.text.slice(0, 300) : item.text}</p>` +
+        `<p>${item.text.length > 300 ? item.text.slice(0, 200) : item.text}</p>` +
         `<div class="article__footer">
         <div class="article__button-block"><button type="button" class="article__btn article__btn_del" onclick="deleteNote(event)" data-id="${item.timestamp}">Удалить пост</button>
         <button type="button" class="article__btn article__btn_edit" onclick="editNote(event)" data-id="${item.timestamp}"
@@ -183,13 +183,13 @@ const deleteNote = (event) => {
   // получаем ключ записи
   const req = index.getKey(valueTimestamp);
   req.onsuccess = (event) => {
-    const key = req.result;
+    const key = event.target.result;
     // выполняем запрос на удаление указанной записи из хранилища объектов
     let deleteRequest = store.delete(key);
     deleteRequest.onsuccess = (event) => {
+      event.preventDefault();
       // обрабатываем успех нашего запроса на удаление
       console.log('Delete request successful');
-      event.preventDefault();
       getAndDisplayNotes(db);
     };
   };
@@ -240,7 +240,7 @@ const editNote = (event) => {
   const req = index.getKey(valueTimestamp);
 
   req.onsuccess = (event) => {
-    const key = req.result;
+    const key = event.target.result;
     console.log(key);
 
     const editRequest = store.get(key);
@@ -268,7 +268,7 @@ const editNote = (event) => {
         };
 
         store.put(editedArticle, key);
-        editForm.reset();
+        // editForm.reset();
 
         tx.oncomplete = () => {
           getAndDisplayNotes(db);
@@ -280,5 +280,3 @@ const editNote = (event) => {
     };
   };
 };
-
-// Вывод длинной заметки на отдельной странице
