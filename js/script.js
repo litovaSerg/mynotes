@@ -1,4 +1,21 @@
 'use strict';
+// Time output format
+const options = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  timezone: 'UTC',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+};
+
+const posts = document.querySelector('.posts');
+const submitForm = document.querySelector('.forms__send-post');
+const addPost = document.getElementById('call-submit-form');
+const allNotesStats = document.querySelector('[data-stats="allnotes"]');
+const allNotesSymb = document.querySelector('[data-stats="allsymb"]');
+
 //  Indexed DB
 let db;
 let dbReq = indexedDB.open('DB', 1);
@@ -44,9 +61,7 @@ dbReq.onsuccess = (event) => {
   getAndDisplayNotes(db);
 };
 
-// Отправка заметки
-const submitForm = document.querySelector('.forms__send-post');
-const addPost = document.getElementById('call-submit-form');
+// Add post
 addPost.addEventListener('click', () => {
   submitForm.classList.add('forms__send-post_show');
   addPost.classList.add('forms__submit-btn_hide');
@@ -64,7 +79,7 @@ submitForm.addEventListener('submit', (event) => {
   addPost.classList.remove('forms__submit-btn_hide');
 });
 
-// Извлечение
+// Get all posts
 const getAndDisplayNotes = (db) => {
   let tx = db.transaction(['posts'], 'readonly');
   let store = tx.objectStore('posts');
@@ -78,7 +93,7 @@ const getAndDisplayNotes = (db) => {
 
   // Создать запрос курсора
   // let req = store.openCursor();
-  let allNotes = [];
+  let allPosts = [];
 
   req.onsuccess = (event) => {
     // Результатом req.onsuccess в запросах openCursor является
@@ -87,12 +102,13 @@ const getAndDisplayNotes = (db) => {
 
     if (cursor != null) {
       // Если курсор не нулевой, мы получили элемент.
-      allNotes.push(cursor.value);
+      allPosts.push(cursor.value);
       cursor.continue();
     } else {
       // Если у нас нулевой курсор, это означает, что мы получили
       // все данные, поэтому отображаем заметки, которые мы получили.
-      displayNotes(allNotes);
+      displayNotes(allPosts);
+      getStatsInSidebar(allPosts);
     }
   };
 
@@ -101,26 +117,14 @@ const getAndDisplayNotes = (db) => {
   };
 };
 
-// Отображение
-const options = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  timezone: 'UTC',
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-};
-
-// Отображение
-const posts = document.querySelector('.posts');
-function displayNotes(notes) {
-  if (notes.length === 0) {
-    let listHTML = `<article class="article">Здесь пока еще пусто. Добавьте заметку</article>`;
-    posts.innerHTML = listHTML;
+// Render post list
+function displayNotes(postsArr) {
+  let listHTML;
+  if (postsArr.length === 0) {
+    listHTML = `<article class="article">Здесь пока еще пусто. Добавьте заметку</article>`;
   } else {
-    let listHTML = ``;
-    notes.forEach((item) => {
+    listHTML = ``;
+    postsArr.forEach((item) => {
       listHTML +=
         `<article class="${item.important === 'on' ? 'red-article' : 'article'}" data-article_id="${item.timestamp}">` +
         `<div class="text-muted">${
@@ -142,9 +146,15 @@ function displayNotes(notes) {
         <div><a href="../mynotes/pages/article.html?${item.timestamp}" class="article__read-more">Читать далее >></a></div>
         </div>` +
         `</article>`;
-      posts.innerHTML = listHTML;
     });
   }
+  posts.innerHTML = listHTML;
+}
+// Render stats in sidebar
+function getStatsInSidebar(postsArr) {
+  allNotesStats.textContent = postsArr.length;
+  let sumAllSymb = postsArr.reduce((sum, item) => sum + item.title.length + item.text.length, 0);
+  allNotesSymb.textContent = sumAllSymb;
 }
 
 // Вывод заметок по времени добавления

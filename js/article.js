@@ -18,7 +18,7 @@ let dbReq = indexedDB.open('DB', 1);
 
 dbReq.onsuccess = (event) => {
   db = event.target.result;
-  getAndDisplayNotes(db);
+  getSingleNote(db);
 };
 
 dbReq.onerror = (event) => {
@@ -26,7 +26,7 @@ dbReq.onerror = (event) => {
 };
 
 // Get single post
-function getAndDisplayNotes(db) {
+function getSingleNote(db) {
   let tx = db.transaction(['posts'], 'readonly');
   let store = tx.objectStore('posts');
 
@@ -35,22 +35,22 @@ function getAndDisplayNotes(db) {
 
   req.onsuccess = (event) => {
     let requestPost = event.target.result;
-    renderDisplayNotes(requestPost);
+    renderDisplayNote(requestPost);
   };
 }
 
 // Render post
-function renderDisplayNotes(post) {
-  if (post === undefined) {
+function renderDisplayNote(postItem) {
+  if (postItem === undefined) {
     article.innerHTML = 'Заметки не существует или она была удалена';
   } else {
-    const postCreated = new Date(post.timestamp).toLocaleString('ru', timeOptions).toString();
+    const postCreated = new Date(postItem.timestamp).toLocaleString('ru', timeOptions).toString();
     const postEdited =
-      post.timeedit === undefined
+      postItem.timeedit === undefined
         ? ''
-        : ' | Редактировалось: ' + new Date(post.timeedit).toLocaleString('ru', timeOptions).toString();
-    const postTitle = post.title;
-    const postText = post.text + '\n\n';
+        : ' | Редактировалось: ' + new Date(postItem.timeedit).toLocaleString('ru', timeOptions).toString();
+    const postTitle = postItem.title;
+    const postText = postItem.text + '\n\n';
 
     let postHtml = '';
     for (let i = 0; i < postText.length; i++) {
@@ -142,7 +142,7 @@ const editNote = (event) => {
         store.put(editedArticle, key);
 
         tx.oncomplete = () => {
-          getAndDisplayNotes(db);
+          getSingleNote(db);
         };
         tx.onerror = (event) => {
           alert('error storing note ' + event.target.errorCode);
@@ -177,7 +177,7 @@ const deleteNote = (event) => {
     // выполняем запрос на удаление указанной записи из хранилища объектов
     let deleteRequest = store.delete(key);
     deleteRequest.onsuccess = () => {
-      getAndDisplayNotes(db);
+      getSingleNote(db);
       console.log('Delete request successful');
     };
   };
